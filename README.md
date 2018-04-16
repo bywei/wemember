@@ -1,9 +1,20 @@
-#wemember
-新建数据库,修改连接数据库配置文件：Home/Conf/db.php
+#微店客户进货管理系统(wemember)
+  使用ThinkPHP开发，实现微商手机端进货，可对接微信公众号或者移动M站。
+  APP演示效果如下：
+  ![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/app1.png)
+  ![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/app2.png)
+  ![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/app3.png)
+  ![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/app3.png)
 
 #管理后台
 http://localhost/index.php/Admin/main/
 默认用户名密码：admin/123456
+
+![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/admin2.png)
+
+客户订单管理
+
+![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/admin1.png)
 
 #ThinkPHP配置文件大全
 ```
@@ -73,3 +84,23 @@ return array(
 );
 load("@.user")	//手动载入函数库
 ```
+
+# 使用说明
+
+1.新建数据库
+
+2.修改数据库配置：Home/Conf/db.php
+
+3.发布项目到PHP运行环境
+
+# 版本说明
+```
+wemember ver 1.0.0 H5前端进货，后端管理用户信息功能。
+```
+## 关于作者
+
+bywei = 程序员百味
+
+个人博客 = "http://www.bywei.cn"
+
+
