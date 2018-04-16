@@ -4,7 +4,7 @@
   ![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/app1.png)
   ![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/app2.png)
   ![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/app3.png)
-  ![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/app3.png)
+  ![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/app4.png)
 
 #管理后台
 http://localhost/index.php/Admin/main/
