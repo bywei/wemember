@@ -1,0 +1,82 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>修改下拉菜单<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script type="text/javascript" src="__JS__/check.js"></script>
+<script>
+$(document).ready(function() {
+	var $dldd=$('#dl dd');
+	$('.button').click(function() {
+		var 
+			sid = $dldd.find('.select').val(),					//目录
+			menuname = $dldd.find('.qtext').val(),				//菜单名称
+			description = $dldd.find('.textarea').val(),		//连接地址
+			sortid = $dldd.find('.dtext').val(),				//排序ID
+			id=$('#dl input:hidden').val();
+		
+		if (!tcheck(id,'','ID获取失败')) { return false; }
+		if (!tcheck(id,'number','ID获取失败')) { return false; }
+		if (!tcheck(menuname,'','请填写名称')) { return false; }
+		if (!tcheck(menuname,'1,50','名称请在50个字符以内','length')) { return false; }
+		if (!tcheck(sid,'','下拉ID获取失败')) { return false; }
+		if (!tcheck(sid,'number','下拉ID获取失败')) { return false; }
+		if (!tcheck(description,'0,100','描述请在100个字符以内','length')) { return false; }
+		if (!tcheck(sortid,'','请填写排序ID')) { return false; }
+		if (!tcheck(sortid,'number','请填写正确的排序ID，必须是数字')) { return false; }
+		
+		wintq('正在添加，请稍后...',4,20000,0,'');
+		$.ajax({
+			url:'__APP__/Dmenu/dmenuedit_do/',
+			dataType:'json',
+			type:'POST',
+			data:'id='+id+'&menuname='+menuname+'&sid='+sid+'&description='+description+'&sortid='+sortid,
+			success: function(data) {
+				if (data.s=='ok') {
+					wintq('修改成功',1,1000,0,'__APP__/Dmenu/dmenuedit?id='+id);
+				}else {
+					wintq(data.s,3,1000,1,'');
+				}
+			}
+		});
+	});
+});
+</script>
+</head>
+<body>
+<div id="content">
+	<dl id="dl">
+    	<dt>添加下拉菜单</dt>
+        <dd>
+        	<span class="dd_left">下拉分类：</span>
+            <span class="dd_right">
+            	<select name="sid" class="select">
+                    <option value="0">顶级分类</option>
+                    <foreach name="list" item="vo">
+                    	<option value="<{$vo.ID}>" <if condition="$vo['ID'] eq $result['Sid']">selected</if>><{$vo.MenuName}></option>
+                    </foreach>
+                </select><font>* 选下拉分类</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">菜单名称：</span>
+        	<span class="dd_right"><input type="text" name="navname" class="qtext" maxlength="50" value="<{$result.MenuName}>" /><font>* 输入如：客户级别</font></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">菜单说明：</span>
+        	<span class="dd_right"><textarea name="description" class="textarea"><{$result.Description}></textarea><font>* (可选)</font></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">排序ID：</span>
+        	<span class="dd_right"><input type="text" name="sortid" class="dtext" maxlength="3" value="<{$result.Sortid}>" /><font>* 排序ID</font></span>
+        </dd><input type="hidden" value="<{$result.ID}>" />
+        <dd><input type="button" class="button" value="提 交" /></dd>
+    </dl>
+</div>
+</body>
+</html>

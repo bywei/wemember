@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>选择图标|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script>
+$(document).ready(function() {
+	function img(pn) {
+		var page=$('#page').attr('class');
+		if (page!=0) {
+			page=parseInt(page);
+			if (pn=='prev') {
+				if (page-1 != 0) {
+					$('#page').attr('class',page-1);
+					$('#page font').text(page-1);
+					page-=1;
+				}else {
+					return false;
+				}
+			}
+			if (pn=='next') {
+				if (page+1 != 12) {
+					$('#page').attr('class',page+1);
+					$('#page font').text(page+1);
+					page+=1;
+				}else {
+					return false;
+				}
+			}
+		}else {
+			page=1;
+			$('#page').attr('class',page);
+			$('#page font').text(page);
+		}
+		wintq('正在拉取图标，请稍后...',4,20000,0,'');
+		$.ajax({
+			url:'__APP__/System/img_do',
+			dataType:'json',
+			type:'POST',
+			data:'page='+page,
+			success: function(data) {
+				if (data.s=='no') {
+					wintq('图标拉取失败',3,1500,'');
+				}else {
+					$('#content .divimg').html(' ');
+					for (x in data) {
+						$('#content .divimg').append("<img src='__IMAGE__"+data[x]+"' border='0' class='img' />");
+					}
+					$('#wintq').remove();
+					$('#zbody').remove();
+					$('body .img').click(function() {
+						var src=$(this).attr('src');
+						$(window.parent.frames['iframe_pop'].document).find("body #content #mimg").attr('src',src);
+						$(window.parent.frames['iframe_pop'].document).find("body #content #img").val(src);
+					});
+				}
+			}
+		});
+	}
+	$('#next').click(function() {
+		var pn='next';
+		img(pn);
+	});
+	$('#prev').click(function() {
+		var pn='prev';
+		img(pn);
+	});
+	img();
+});
+</script>
+<style>
+body { background:#fff; }
+img { padding:4px; margin:4px; border:solid 1px #fff; }
+img:hover { border:solid 1px #09f; background:#f1f1f1; border-radius:4px; cursor:pointer; }
+</style>
+</head>
+<body>
+<div id="content">
+	<div class="divimg"></div>
+	<div id="page" class="0">总数1031 | <font>1</font>/11　<a href="javascript:;" id="prev">上一页</a><a href="javascript:;" id="next">下一页</a></div>
+</div>	
+</body>
+</html>

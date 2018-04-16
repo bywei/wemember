@@ -1,0 +1,48 @@
+@charset "utf-8";
+/*公共样式表*/
+/*弹窗*/
+#wintq { width:auto; height:54px; line-height:54px; position:fixed; left:0; top:0; z-index:9999; font-family:"微软雅黑"}
+#wintq .tqLeft { width:45px; height:54px; float:left; background:url(../../image/layer.png) no-repeat -5px 0px;}
+#wintq .tqLeft2 { width:45px; height:54px; float:left; background:url(../../image/layer.png) no-repeat -5px -54px;}
+#wintq .tqLeft3 { width:45px; height:54px; float:left; background:url(../../image/layer.png) no-repeat -5px -108px;}
+#wintq .tqLeft4 { width:16px; height:54px; float:left; background:url(../../image/layer.png) no-repeat -5px -108px;}
+#wintq .tqCenter { width:auto; height:54px; line-height:52px; padding-right:15px; float:left; background:url(../../image/layer.png) repeat-x left bottom; font-size:15px; text-align:left; text-indent:15px; color:#333; font-weight:900}
+#wintq .tqCenter .loading { width:auto; height:54px; background:url(../../image/loading2.gif) no-repeat 6px 17px; text-indent:28px; padding-left:4px; }
+#wintq .tqRight { width:6px; height:54px; float:left; background:url(../../image/layer.png) no-repeat left 0px;}
+#zbody { position:fixed; left:0; top:0; z-index:9998; background:#fff; opacity:0.4; filter:Alpha(opacity=40);}
+
+#iframe_pop { width:auto; height:auto; border:solid 1px #999; background:#fff url(../../image/loading.gif) no-repeat center; font-size:12px; box-shadow:0px 0px 10px #888; position:fixed; z-index:9999; font-family:"微软雅黑";}
+#iframe_pop .pop_h1 { width:auto; height:32px; line-height:32px; text-indent:16px; color:#fff; text-align:left; background:#333; position:relative; cursor:move; font-size:14px; }
+#iframe_pop .pop_h1 .pop_close { position:absolute; right:8px; top:6px; width:16px; height:16px; background: url(../../image/home/close.png) no-repeat center top;}
+#iframe_pop .pop_h1 .pop_close:hover { background:url(../../image/home/close.png) no-repeat center bottom; cursor:pointer;}
+
+#f_pop { width:auto; height:auto; border:solid 1px #999; background:#fff url(../../image/loading.gif) no-repeat center; font-size:12px; box-shadow:0px 0px 10px #888; position:fixed; z-index:10000; font-family:"微软雅黑";}
+#f_pop .pop_h1 { width:auto; height:32px; line-height:32px; text-indent:16px; color:#fff; text-align:left; background:#333; position:relative; cursor:move; font-size:14px; }
+#f_pop .pop_h1 .pop_close { position:absolute; right:8px; top:6px; width:16px; height:16px; background: url(../../image/home/close.png) no-repeat center top;}
+#f_pop .pop_h1 .pop_close:hover { background:url(../../image/home/close.png) no-repeat center bottom; cursor:pointer;}
+#sbody { position:fixed; left:0; top:0; width:100%; height:100%; z-index:9999; background:#fff; opacity:0.4; filter:Alpha(opacity=40);}
+
+#tcimg { width:auto; height:auto; position:fixed; background:#fff; z-index:9999 }
+#tcimg .close { width:40px; height:40px; position:absolute; top:0; right:0; background:url(../../image/home/close2.png) no-repeat right top; cursor:pointer; }
+#tcimg img { max-width:1100px; max-height:620px; }
+
+
+#Remindh { position:fixed; top:78px; right:20px; width:50px; height:46px; line-height:44px; text-indent:16px; color:#FF0; text-align:left; background:url(../../image/home/sess.png) no-repeat left top; font-size:14px; font-family:"微软雅黑"; display:blick; z-index:99; cursor:pointer; font-weight:900; }
+
+/*错误页面*/
+#error { width:400px; height:auto; margin:0 auto; font-family:"微软雅黑"; text-align:center; border:solid 1px #ccc; background:#fff; padding-bottom:26px; padding-top:10px; margin-top:5%; box-shadow:0px 0px 10px #000 }
+#error .img { width:400px; height:150px; margin:0 auto; }
+#error .font { width:400px; line-height:24px; font-size:14px; color:#666; font-weight:400; margin-top:30px; }
+#error .font .history { font-weight:900; color:#f00; }
+#error .font a { text-decoration:none; color:#f00; }
+#error .font a:hover { text-decoration:underline; }
+
+#with { width:95%; height:100%; margin:0 auto; font-size:12px; font-family:"微软雅黑"; color:#333; padding:10px 0px; background:#fff;  }
+#with ul { margin:0; padding:0; list-style:none; }
+#with ul li { height:24px; line-height:24px; }
+#with ul li strong { color:#d30000; }
+#with ul li span.s1 { color:#06f}
+#with ul li span.s2 { color:#060}
+#with ul li span.s3 { color:#F0F}
+#with ul li span.s4 { color:#f00}
+#with ul li img { position:relative; top:2px; }

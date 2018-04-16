@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>信息提示<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script>
+$(function() {
+	$('#with li .load').click(function() {
+		location.reload();
+	});
+	$('#with li .hr').click(function() {
+		window.parent.frames['c'].location.href='__APP__/With/with';
+	});
+});
+</script>
+</head>
+<body>
+<div id="with">
+    <ul>
+    	<li><a href="javascript:;" class="load">刷新</a>　　<a href="javascript:;" class="hr">去完成</a></li>
+    	<li>当前需跟单数：<strong><{$withcount}></strong> 单　　　已完成：<strong><{$withcomplete}></strong> 单　　　还剩：<strong><{$withcount-$withcomplete}></strong> 单没完成</li>
+        <li><strong>客户列表</strong></li>
+        <volist name="withlist" id="vo">
+        	<li><span class="s1">客户名称：</span><{$vo.CompanyName}>&nbsp;&nbsp;&nbsp;—>&nbsp;&nbsp;&nbsp;<span class="s2">联系人：</span><{$vo.ContactName}>&nbsp;&nbsp;&nbsp;—>&nbsp;&nbsp;&nbsp;<span class="s3">状态：</span><if condition="$vo.Remind eq 0"><span class="s4">未完成</span><else /><img src="__IMAGE__/yes.png" border="0" title="已完成" /></if></li>
+        </volist>
+    	<li></li>
+    	<li></li>
+    </ul>
+</body>
+</html>

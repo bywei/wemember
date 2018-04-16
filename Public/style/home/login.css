@@ -1,0 +1,17 @@
+@charset "utf-8";
+/* CSS Document */
+* { margin:0; padding:0; }
+body { margin:0; padding:0; background:url(../../image/home/login_bg1.jpg) no-repeat center top; font-family:"微软雅黑"; }
+#content { width:340px; height:300px; margin:0 auto; margin-top:130px; font-size:12px; color:#333; background:#f1f1f1; box-shadow:0px 0px 18px #333; }
+#content dl { width:280px; height:auto; margin:0 auto; padding-top:30px;  }
+#content dl dt { font-size:26px; height:30px; line-height:30px; margin-bottom:24px; font-weight:400; font-family:"微软雅黑"; color:#666 }
+#content dl dd { height:50px; text-align:left; margin-bottom:6px; position:relative; color:#444; }
+#content dl dd a { text-decoration:none; color:#060}
+#content dl dd a:hover { text-decoration:underline; color:#f00}
+#content #verify { position:absolute; left:90px; top:0px; display:block }
+#content .button { position:absolute; left:190px; top:0px; width:90px; height:38px; background:#333; border:none; font-size:14px; color:#fff; cursor:pointer; font-family:"微软雅黑"; }
+#content .button:hover { background:#3aa400; }
+#content .utext, .ptext { width:280px; height:36px; line-height:36px; border:solid 1px #ccc; text-indent:50px; position:absolute; left:0; }
+#content .utext { background:#fff url(../../image/home/login_text.png) no-repeat left top; font-size:14px; font-family:"微软雅黑"; color:#666; }
+#content .ptext { background:#fff url(../../image/home/login_text.png) no-repeat left bottom; }
+#content .code { width:80px; height:36px; line-height:36px; background:#fff; border:solid 1px #ccc; text-indent:5px; position:absolute; left:0; font-size:14px; font-family:"微软雅黑"; color:#666; }

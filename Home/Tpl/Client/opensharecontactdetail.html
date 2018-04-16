@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>共享客户联系人列表|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+</head>
+<body>
+
+<div id="content" style="padding-bottom:0;">
+    <form action="__APP__/Client/contactedit_do" method="post">
+    <table id="client" border="1" bordercolor="#CCCCCC" cellpadding="0" cellspacing="0">
+    	<tr class="tr">
+        	<td class="left">客户/公司：</td>
+        	<td><{$result['CompanyName']}></td>
+            <td class="left">联系人：</td>
+        	<td><{$result['ContactName']}></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">性别：</td>
+        	<td><{$result['Sex']}></td>
+            <td class="left">职位：</td>
+            <td>
+                <volist name="volist" id="vo">
+                    <if condition="$vo.Sid eq 4">
+                    <if condition="$vo.ID eq $result['Post']"><{$vo.MenuName}></if>
+                    </if>
+                </volist>
+            </td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">腾讯QQ：</td>
+        	<td><{$result['Qq']}></td>
+            <td class="left">Msn/Skype：</td>
+            <td><{$result['Skype']}></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">阿里旺旺：</td>
+        	<td><{$result['Alww']}></td>
+            <td class="left">传真：</td>
+            <td><{$result['Fax']}></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">手机号码：</td>
+        	<td><{$result['Phone']}></td>
+            <td class="left">电话号码：</td>
+            <td><{$result['Tel']}></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">Email：</td>
+        	<td><{$result['Email']}></td>
+            <td class="left">生日：</td>
+            <td><{$result['Birthday']}></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">备注说明：</td>
+        	<td colspan="3"><{$result['Content']}></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">录入时间：</td>
+        	<td><{$result['Dtime']}></td>
+            <td class="left">最后更新：</td>
+        	<td><{$result['FinalTime']}></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>

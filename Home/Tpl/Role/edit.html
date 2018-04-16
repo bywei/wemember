@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>修改角色|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script type="text/javascript" src="__JS__/check.js"></script>
+<script>
+$(document).ready(function() {
+	$('.button').click(function() {
+		var rolename=$('#dl dd .qtext').val();
+		var description=$('#dl dd .textarea').val();
+		var status=$('#dl dd .status:checked').val();
+		var id=$('#dl input:hidden').val();
+		var comp='';
+		for (i=0; i<$('#dl dd .comp').size(); i++) {
+			if (!$('#dl dd .comp').eq(i).attr('checked')==false) {
+				comp=comp+$('#dl dd .comp').eq(i).val()+',';
+			}
+		}
+		if (!tcheck(id,'','ID获取失败')) { return false; }
+		if (!tcheck(id,'number','ID获取失败')) { return false; }
+		if (!tcheck(rolename,'','请填写角色名称')) { return false; }
+		if (!tcheck(rolename,'2,20','角色名称请在20个字符以内','length')) { return false; }
+		if (!tcheck(description,'0,30','描述请在30个字符以内','length')) { return false; }
+		if (!tcheck(comp,'','给用户授点权吧')) { return false; }
+		
+		wintq('正在修改，请稍后...',4,20000,0,'');
+		$.ajax({
+			url:'__APP__/Role/roleedit_do/',
+			dataType:'json',
+			type:'POST',
+			data:'id='+id+'&rolename='+rolename+'&description='+description+'&comp='+comp+'&status='+status,
+			success: function(data) {
+				if (data.s=='ok') {
+					wintq('修改成功',1,1500,0,'__APP__/Role/roleedit/id/'+id);
+				}else {
+					wintq(data.s,3,1500,1,'');
+				}
+			}
+		});
+	});
+});
+</script>
+</head>
+<body>
+<div id="content">
+	<dl id="dl">
+    	<dt>修改控制角色</dt>
+        <dd>
+        	<span class="dd_left">角色名称：</span>
+        	<span class="dd_right"><input type="text" name="rolename" class="qtext" value="<{$result['Rolename']}>" /><font>* 输入如：来宾用户</font></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">角色说明：</span>
+            <span class="dd_right"><textarea name="description" class="textarea"><{$result['Description']}></textarea></span>
+        </dd>
+        <dt>权限分配</dt>
+        <volist name="volist" id="vo">
+        <dd>
+        	<span class="dd_left"><{$vo.Cname}>：</span>
+            <span class="dd_right" style="width:590px;">
+            	<volist name="slist" id="s">
+                <if condition="$s.Sid eq $vo['ID']">
+                <label><input type="checkbox" class="comp" value="<{$s.ID}>" <in name="s.ID" value="$result['Competence']">checked</in> /> <{$s.Cname}></label>
+                </if>
+                </volist>
+            </span>
+        </dd>
+        </volist>
+        <dd>
+        	<span class="dd_left">状态：</span>
+            <span class="dd_right"><label><input type="radio" name="status" class="status" value="0" <if condition="$result['Status'] eq 0">checked</if> /> 正常</label><label><input type="radio" name="status" class="status" value="1" <if condition="$result['Status'] eq 1">checked</if> /> 锁定</label><font>* 提示：如果没有修改任何信息，则会提示“数据修改失败”</font></span>
+        </dd><input type="hidden" value="<{$result['ID']}>" />
+        <dd><input type="button" class="button" value="提 交" /></dd>
+    </dl>
+</div>
+</body>
+</html>

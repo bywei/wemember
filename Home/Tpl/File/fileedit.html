@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>修改文件信息|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script type="text/javascript" src="__JS__/check.js"></script>
+<script type="text/javascript" src="__JS__/My97DatePicker/WdatePicker.js"></script>
+<script>
+$(document).ready(function() {
+	var $dldd = $('#dl dd');
+	$('.button').click(function() {
+		var 
+			filename=$dldd.find('.qtext').val(),						//分类目录名称
+			sid=$dldd.find('.select').val(),							//目录
+			description=$dldd.find('.textarea').val(),					//描述
+			share=$dldd.find('.share:checked').val(),							//共享
+			id=$('#dl input:hidden').eq(-1).val();
+			
+		if (!tcheck(id,'','ID获取失败')) { return false; }
+		if (!tcheck(id,'number','ID获取失败')) { return false; }
+		if (!tcheck(filename,'1,50','文件名称请控制在30个字符以内','length')) { return false; }
+		if (!tcheck(description,'0,30','文件描述请控制在30个字符以内','length')) { return false; }
+		if (!tcheck(sid,'','目录ID获取失败')) { return false; }
+		if (!tcheck(sid,'number','目录ID获取失败')) { return false; }
+		
+		wintq('正在处理，请稍后...',4,20000,0,'');
+		$.ajax({
+			url:'__APP__/File/fileedit_do',
+			dataType:'json',
+			type:'POST',
+			data:'id='+id+'&filename='+filename+'&sid='+sid+'&description='+description+'&share='+share,
+			success: function(data) {
+				if (data.s=='ok') {
+					wintq('修改成功',1,1000,0,'__APP__/File/fileedit/id/'+id);
+				}else {
+					wintq(data.s,3,1000,1,'');
+				}
+			}
+		});
+	});
+});
+</script>
+</head>
+<body>
+<div id="content">
+	<dl id="dl">
+    	<dt>修改文件信息</dt>
+        <dd>
+        	<span class="dd_left">文件名称：</span>
+        	<span class="dd_right"><input type="text" name="filename" class="qtext" maxlength="20" value="<{$result['FileName']}>" /><font>* 输入如：我的图片</font></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">文件目录：</span>
+            <span class="dd_right">
+            	<select name="sid" class="select">
+                    <option value="0">顶级目录</option>
+                    <foreach name="list" item="l">
+                    	<if condition="$result['Sid'] eq 0">
+                        	<if condition="$l['Sid'] eq 0">
+                            	<option value="<if condition="$result['ID'] eq $l['ID']">0<else /><{$l.ID}></if>" <if condition="$result['ID'] eq $l['ID']">selected</if>><if condition="$l.html neq ''">└</if><{$l.html}><{$l.classname}></option>
+                            <else />
+                            	<option value="<{$l.ID}>" <if condition="$result['Sid'] eq $l['ID']">selected</if>><if condition="$l.html neq ''">└</if><{$l.html}><{$l.classname}></option>
+                            </if>
+                        <else />
+                        	<option value="<{$l.ID}>" <if condition="$result['Sid'] eq $l['ID']">selected</if>><if condition="$l.html neq ''">└</if><{$l.html}><{$l.classname}></option>
+                        </if>
+                    </foreach>
+                </select><font>* 选择文件的存放目录</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">描述说明：</span>
+            <span class="dd_right"><textarea name="description" class="textarea"><{$result['Description']}></textarea><font>30个字符以内</font></span>
+        </dd><input type="hidden" value="<{$result['ID']}>" />
+        <dd>
+        	<span class="dd_left">文件共享</span>
+            <span class="dd_right"><label><input type="radio" value="0" name="share" class="share" <if condition="$result['Share'] eq 0">checked</if> /> 不共享</label><label><input type="radio" value="1" name="share" class="share" <if condition="$result['Share'] eq 1">checked</if> /> 共享</label></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">文件大小：</span>
+            <span class="dd_right"><font><{$result['FileSize']/1024|round=2}> KB</font></span>
+            <span class="dd_left">上传时间：</span>
+            <span class="dd_right"><{$result['Dtime']}></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">存放路径：</span>
+            <span class="dd_right"><{$result['FilePath']}></span>
+        </dd>
+        <dd><input type="button" class="button" value="提 交" /></dd>
+    </dl>
+</div>
+</body>
+</html>

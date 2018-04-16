@@ -1,0 +1,236 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>文件列表|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script>
+$(document).ready(function() {
+    $('#content h2 .add').click(function() {
+		popload('添加文件分类目录',600,340,'__APP__/File/fileclass_add/?sid=<{$fileinfo["sid"]}>');
+		addDiv($('#iframe_pop'));
+		popclose();
+	});
+	//快捷导航跳转
+	$('.select').eq(0).change(function() {
+		wintq('正在查询，请稍后...',4,20000,0,'');
+		location.href = '__APP__/File/filelist?sid='+$(this).val();
+	});
+	//快捷上传
+	$('.select').eq(1).change(function() {
+		wintq('正在跳转，请稍后...',4,20000,0,'');
+		location.href = '__APP__/File/uploadpic?sid='+$(this).val();
+	});
+	
+	//wintq('正在加载，请稍后....',4,20000,1,'');
+	//加载文件跟文件夹
+	$.get('__APP__/File/fileajax?sid=<{$fileinfo["sid"]}>',function(data) {
+		//$('#wintq').remove();
+		//$('#zbody').remove();
+		$('.content').html(data);
+		//判断是否存在文件夹
+		if ($('#content .dira').size()==0 && $('#content .dir').size()==0) {
+			$('#content').append('<div class="cerr">该文件夹中没有对应的文件或文件夹</div>');
+		}
+		//选中文件夹
+		$('#content .Ddir').click(function(event) {
+			event.preventDefault();
+			$('#content .Ddir').removeClass('dirh').find('.g').hide();
+			$(this).addClass('dirh').find('.g').show();
+		});
+		//双击进入相应的文件夹
+		$('#content .dira').dblclick(function(event) {
+			event.preventDefault();
+			location.href=$(this).attr('data-title');
+		});
+		//修改文件夹信息
+		$('#content .dira #diredit').click(function(event) {
+			event.preventDefault();
+			var id = $(this).attr('class');
+			if (id!='' && !isNaN(id)) {
+				popload('修改目录信息',600,340,'__APP__/File/fileclass_edit/id/'+id);
+				addDiv($('#iframe_pop'));
+				popclose();
+			}else {
+				wintq('操作失败',3,1000,1,'');
+				return false;
+			}
+		});
+		//图片放大
+		$('#content .dir .f').dblclick(function() {
+			if ($(this).attr('src')!='') {
+				tcimg($(this).attr('src'));
+			}
+		});
+		//修改文件信息
+		$('#content .dir .bj .fedit').click(function(event) {
+			event.preventDefault();
+			var id = $(this).attr('id');
+			if (id!='' && !isNaN(id)) {
+				popload('修改文件信息',610,380,'__APP__/File/fileedit/id/'+id);
+				addDiv($('#iframe_pop'));
+				popclose();
+			}else {
+				wintq('ID获取失败',3,1000,1,'');
+				return false;
+			}
+		});
+		//删除文件
+		$('#content .dir .bj #del').click(function() {
+			if (!confirm('确定要删除该文件吗，删除后将不可恢复？')) {
+				return false;
+			}
+			var id = $(this).attr('class');
+			if (id!='' && !isNaN(id)) {
+				wintq('正在删除，请稍后...',4,20000,0,'');
+				$.ajax({
+					url:'__APP__/File/filedel',
+					dataType:'json',
+					type:'POST',
+					data:'id='+id,
+					success: function(data) {
+						if (data.s=='ok') {
+							wintq('文件删除成功',1,500,0,'?');
+						}else {
+							wintq(data.s,3,1500,1,'');
+						}
+					}
+				});
+			}else {
+				wintq('文件ID获取失败',3,1000,1,'');
+				return false;
+			}
+		});
+		//选中文件
+		$('#content .indel').click(function() {
+			if ($(this).attr('title')=='yes') {
+				$(this).removeClass('dird');
+				$(this).attr('title','no').find('.g').hide();
+			}else {
+				$(this).addClass('dird');
+				$(this).attr('title','yes').find('.g').show();
+			}
+		});
+		//全选文件
+		$('#content #fileselect').click(function() {
+			for (i=0; i<$('#content .indel').size(); i++) {
+				$('#content .indel').eq(i).addClass('dird');
+				$('#content .indel').eq(i).attr('title','yes').find('.g').show();
+			}
+		});
+		//批量删除文件
+		$('#dely').click(function(event) {
+			event.preventDefault();
+			if (!confirm('确定要删除选择项吗？')) {
+				return false;
+			}
+			var delid='';
+			for (i=0; i<$('#content .dird').size(); i++) {
+				delid=delid+$('#content .dird').eq(i).attr('id')+',';
+			}
+			if (delid=='' || delid==0) {
+				wintq('请选中文件后再操作',2,1500,1,'');
+			}else {
+				wintq('正在删除，请稍后...',4,20000,0,'');
+				$.ajax({
+					url:'__APP__/File/fileindel/',
+					dataType:'JSON',
+					type:'POST',
+					data:'delid='+delid,
+					success: function(data) {
+						if (data.s=='ok') {
+							wintq('删除成功',1,1500,0,'?');
+						}else {
+							wintq(data.s,3,1500,1,'');
+						}
+					}
+				});
+			}
+		});
+		//删除文件夹
+		$('#content .dir #dirdel').click(function() {
+			if (!confirm('确定要删除该文件夹及文件夹下的所有文件吗？')) {
+				return false;
+			}
+			var id = $(this).attr('class');
+			if (id!='' && !isNaN(id)) {
+				wintq('正在删除，请稍后...',4,20000,0,'');
+				$.ajax({
+					url:'__APP__/File/dirdel',
+					dataType:'json',
+					type:'POST',
+					data:'id='+id,
+					success: function(data) {
+						if (data.s=='ok') {
+							wintq('文件删除成功',1,500,0,'?');
+						}else {
+							wintq(data.s,3,1500,1,'');
+						}
+					}
+				});
+			}else {
+				wintq('文件夹ID获取失败',3,1000,1,'');
+				return false;
+			}
+		});
+		//移动文件
+		$('.umove').click(function() {
+			var moveid='';
+			for (i=0; i<$('#content .dird').size(); i++) {
+				moveid=moveid+$('#content .dird').eq(i).attr('id')+',';
+			}
+			if (moveid=='' || moveid==0) {
+				wintq('请选中文件后再操作',2,1500,1,'');
+			}else {
+				popload('移动选中文件',340,150,'__APP__/File/filemove/?moveid='+moveid);
+				addDiv($('#iframe_pop'));
+				popclose();
+			}
+		});
+	});
+});
+</script>
+</head>
+<body>
+<div id="content">
+	<h1>首页 > 云端文件 > 文件列表</h1>
+    <h2>
+    	<div class="h2_left">
+        	<a href="__ACTION__" class="whole">全部</a>
+        	<a href="javascript:;" class="f5" onclick="f5();">刷新</a>
+            <a href="javascript:;" class="add" title="在此目录中新建文件夹">新建</a>
+            <a href="javascript:;" class="umove" title="移动选中的文件到其它文件夹">移动</a>
+            <a href="javascript:history.back();" class="Retreat">后退</a>
+            <a href="javascript:history.go(1);" class="Advance">前进</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;快捷目录导航：
+            <select name="sid" class="select">
+            	<option value="0">顶级目录</option>
+            	<volist name="list" id="vo">
+            	<option value="<{$vo.ID}>" <if condition="$vo.ID eq $fileinfo['sid']">selected</if> ><if condition="$vo.Sid neq 0">└</if><{$vo.html}><{$vo.classname}></option>
+                </volist>
+            </select>
+            &nbsp;&nbsp;&nbsp;&nbsp;快捷上传：
+            <select name="sid" class="select">
+            	<option value="0">顶级目录</option>
+            	<volist name="list" id="vo">
+            	<option value="<{$vo.ID}>"><if condition="$vo.Sid neq 0">└</if><{$vo.html}><{$vo.classname}></option>
+                </volist>
+            </select>
+        </div>
+    </h2>
+    <h3>
+    	<a href="__APP__/File/filelist" class="h3a">我的文件列表</a>
+    	<a href="__APP__/File/uploadpic?sid=<{$fileinfo['sid']}>">上传图片</a>
+        <a href="__APP__/File/uploadfile?sid=<{$fileinfo['sid']}>">上传文件</a>
+        <a href="__APP__/File/fileshare">共享文件</a>
+    </h3>
+    <div class="content"></div>
+    <div id="page">对选中文件项进行&nbsp;&nbsp;<a href="javascript:;" id="fileselect">全选</a><a href="javascript:;" id="dely">删除</a>(不包括文件夹)&nbsp;&nbsp;&nbsp;&nbsp;当前共有 <strong><{$fileinfo['count']}></strong> 个文件或文件夹&nbsp;&nbsp;&nbsp;&nbsp;<strong>云端文件统计 —— </strong>文件总数：<strong><{$fileinfo['filecount']}></strong> 个&nbsp;&nbsp;&nbsp;&nbsp;占用空间：<strong><{$fileinfo['filesum']/1024/1024|round=2}>M</strong>&nbsp;&nbsp;&nbsp;&nbsp;总容量/剩余：<strong><{$fileinfo['capacity']}>M / <{$fileinfo['scapacity']}>M</strong></div>
+    <div style="clear:both"></div>
+</div>
+</body>
+</html>

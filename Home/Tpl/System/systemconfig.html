@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>系统配置信息|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+</head>
+<body>
+<div id="content">
+	<h1>首页 > 系统管理 > 系统配置</h1>
+    <h2>
+    	<div class="h2_left">
+        	<a href="javascript:;" class="f5" onclick="f5();">刷新</a>
+            <a href="javascript:history.back();" class="Retreat">后退</a>
+            <a href="javascript:history.go(1);" class="Advance">前进</a>
+        </div>
+    </h2>
+    <h3>
+    	<a href="__APP__/System/systemwebsite">网站设置</a>
+    	<a href="__APP__/System/systemconfig" class="h3a">系统配置</a>
+        <a href="__APP__/System/systemcore">核心配置</a>
+    </h3>
+    <form action="__APP__/System/systemconfig_do" method="post" id="form">
+    <dl id="cdl">
+    	<dd>
+        	<span class="dd_left">Tarce信息：</span>
+            <span class="dd_right">
+            	<label><input type="radio" value="true" name="trace" <if condition="$config['tarce'] eq true">checked</if> /> 开启</label>
+                <label><input type="radio" value="false" name="trace" <if condition="$config['tarce'] eq false">checked</if> /> 关闭</label>
+                <font>显示页面Tarce信息，包括（请求时间、当前页面、请求协议等等...）</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">调试模式：</span>
+            <span class="dd_right">
+            	<label><input type="radio" value="true" name="debug" <if condition="$config['debug'] eq true">checked</if> /> 开启</label>
+                <label><input type="radio" value="false" name="debug" <if condition="$config['debug'] eq false">checked</if> /> 关闭</label>
+                <font>应用调试模式</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">会话过期时间：</span>
+            <span class="dd_right">
+            	<select name="sessionuser" class="select">
+                    <option value="600" <if condition="$config['sessionuser'] eq '600'">selected</if>>10分钟</option>
+                    <option value="1800" <if condition="$config['sessionuser'] eq '1800'">selected</if>>30分钟</option>
+                    <option value="3600" <if condition="$config['sessionuser'] eq '3600'">selected</if>>1小时</option>
+                </select><font>设置用户SESSION过期时间</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">日志记录：</span>
+            <span class="dd_right">
+            	<label><input type="radio" value="true" name="log" <if condition="$config['log'] eq true">checked</if> /> 开启</label>
+                <label><input type="radio" value="false" name="log" <if condition="$config['log'] eq false">checked</if> /> 关闭</label>
+                <font>开启日志记录</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">日志类型：</span>
+            <span class="dd_right">
+            	<label><input type="checkbox" value="EMERG" name="typelog[]" <in name="config['typelog']['EMERG']" value="$config['typelog']">checked</in>/> EMERG</label>
+                <label><input type="checkbox" value="ALERT" name="typelog[]" <in name="config['typelog']['ALERT']" value="$config['typelog']">checked</in> /> ALERT</label>
+                <label><input type="checkbox" value="CRIT" name="typelog[]" <in name="config['typelog']['CRIT']" value="$config['typelog']">checked</in> /> CRIT</label>
+                <label><input type="checkbox" value="ERR" name="typelog[]" <in name="config['typelog']['ERR']" value="$config['typelog']">checked</in> /> ERR</label>
+                <font>如果没有开启日志记录，选择将无效</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">URL模式：</span>
+            <span class="dd_right">
+            	<select name="url" class="select">
+                    <option value="0" <if condition="$config['url'] eq '0'">selected</if>>普通模式</option>
+                    <option value="1" <if condition="$config['url'] eq '1'">selected</if>>PATHINFO模式</option>
+                    <option value="2" <if condition="$config['url'] eq '2'">selected</if>>REWRITE模式</option>
+                    <option value="3" <if condition="$config['url'] eq '3'">selected</if>>兼容模式</option>
+                </select><font>默认为PATHINFO模式</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">URL大小写：</span>
+            <span class="dd_right">
+            	<label><input type="radio" value="false" name="urlcase" <if condition="$config['urlcase'] eq false">checked</if> /> 开启</label>
+                <label><input type="radio" value="true" name="urlcase" <if condition="$config['urlcase'] eq true">checked</if> /> 关闭</label>
+                <font>URL大小写</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">令牌验证：</span>
+            <span class="dd_right">
+            	<label><input type="radio" value="true" name="tokenon" <if condition="$config['tokenon'] eq true">checked</if> /> 开启</label>
+                <label><input type="radio" value="false" name="tokenon" <if condition="$config['tokenon'] eq false">checked</if> /> 关闭</label>
+                <font>提交表单时是否开启令牌验证</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">重置令牌：</span>
+            <span class="dd_right">
+            	<label><input type="radio" value="true" name="tokenreset" <if condition="$config['tokenreset'] eq true">checked</if> /> 是</label>
+                <label><input type="radio" value="false" name="tokenreset" <if condition="$config['tokenreset'] eq false">checked</if> /> 否</label>
+                <font>令牌验证出错后是否重置令牌</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">字段验证：</span>
+            <span class="dd_right">
+            	<label><input type="radio" value="true" name="dbfieldcheck" <if condition="$config['dbfieldcheck'] eq true">checked</if> /> 开启</label>
+                <label><input type="radio" value="false" name="dbfieldcheck" <if condition="$config['dbfieldcheck'] eq false">checked</if> /> 关闭</label>
+                <font>是否开启字段类型验证</font>
+            </span>
+        </dd>
+        <dd><input type="submit" name="submit" value="提交" class="submit" /></dd>
+    </dl>
+    </form>
+</div>
+</body>
+</html>

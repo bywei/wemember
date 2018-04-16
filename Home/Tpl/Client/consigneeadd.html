@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>新建进货</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="进货页面" />
+<script type="application/x-javascript">
+	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); 
+	 function hideURLbar(){ window.scrollTo(0,1); } 
+</script>
+<!-- //for-mobile-apps -->
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="__CSS_PATH__/client/style.css"/>
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script>
+$(document).ready(function() {
+	 $('#consigneeAddAct').submit(function(){
+		 var cid = $("input[name='cid']").val();
+		 var consigneeName = $("input[name='consigneeName']").val();
+		 var phone = $("input[name='phone']").val();
+		 var goodsNum = $("input[name='goodsNum']").val();
+		 var address = $("input[name='address']").val();
+		 var description = $("#description").val();
+		if(cid == ''){
+			wintq('请重新登录',1,1000,0,'__APP__/Index?');
+		}
+		if(goodsNum == ''){
+			$("input[name='goodsNum']").focus();
+			return false;
+		}
+		if(address == ''){
+			$("input[name='address']").focus();
+			return false;
+		}
+		if (!/^[a-zA-Z0-9_-]|[\u4e00-\u9fa5]{2,16}$/.test(consigneeName)) {
+			wintq('请输入正确的姓名',2,2000,1,'');
+			$("input[name='consigneeName']").focus();
+			return false;
+		}
+		if (!/^1[3|4|5|8][0-9]\d{4,8}$/.test(phone)) {
+			wintq('请输入正确的手机号',2,2000,1,'');
+			$("input[name='phone']").focus();
+			return false;
+		}
+		if(!/^\d{1,}$/.test(goodsNum)){
+			wintq('请输入数字进货数量',2,2000,1,'');
+			$("input[name='goodsNum']").focus();
+			return false;
+		}
+		wintq('正在处理，请稍后...',4,20000,0,'');
+		$.ajax({
+			url:'__APP__/Front/consigneeAdd_do',
+			dataType:"json",
+			type:'POST',
+			cache:false,
+			data:'cid='+cid+'&consigneeName='+consigneeName+'&phone='+phone+'&goodsNum='+goodsNum+'&address='+address+'&description='+description,
+			success: function(data) {
+				if (data.s=='ok') {
+					wintq('添加成功',1,1000,0,'__APP__/Front/consignee');
+				}else {
+					wintq(data.s,3,1000,1,'');
+				}
+			}
+		});
+		return false;
+	 });
+});
+</script>
+</head>
+<body>
+
+	<div class="main">
+		<div class="w3_agile_main_grids">
+			<div class="agileits_w3layouts_main_grid">
+				<form id="consigneeAddAct" action="__APP__/Front/consigneeAdd_do" method="post">
+					<div class="agile_main_grid_left">
+						<div class="w3_agileits_main_grid_left_grid">
+							<input type="hidden" name="cid" value="<{$cid}>"/>
+							<input type="text" name="consigneeName" placeholder="请输入收货人姓名" required=""/>
+							<input type="text" name="phone" placeholder="请输入收货人手机号码" required=""/>
+							<label style="font-size: 12px;color: gray;">友情提示：购买数量低于200盒，会员自己承担运费，超过200盒，公司承担运费</label>
+							<input type="text" name="goodsNum" placeholder="请输入进货数量" required=""/>
+							<input type="text" name="address" placeholder="请输入收货详细地址" required=""/>
+							<textarea id="description" name="description" placeholder="选填特殊备注信息"></textarea>
+						</div>
+					</div>
+					<div class="clear"> </div>
+					<input type="submit" value="下单"/>
+				</form>
+			</div>
+		</div>
+		<div class="agileits_copyright">
+			<p>订单购买成功后24小时内可以申请退单，退单手续费100元</p>
+		</div>
+	</div>
+</body>
+</html>

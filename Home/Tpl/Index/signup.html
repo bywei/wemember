@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html lang="en" class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <title>登录</title>
+		<meta name="keywords" content="登录" />
+		<meta name="description" content="登录" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <!-- CSS -->
+        <link rel="stylesheet" href="__CSS_PATH__/index/reset.css">
+        <link rel="stylesheet" href="__CSS_PATH__/index/supersized.css">
+        <link rel="stylesheet" href="__CSS_PATH__/index/style.css">
+		<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+        <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+        <!-- Javascript -->
+        <script type="text/javascript" src="__JS__/jquery.js"></script>
+        <script type="text/javascript" src="__JS__/supersized.3.2.7.min.js"></script>
+        <script type="text/javascript" src="__JS__/winpop.js"></script>
+        <script type="text/javascript">
+        jQuery(document).ready(function() {
+        	$('#content input').eq(0).focus();
+		    $('body input:text, input:password, textarea').focus(function() {
+				$(this).css({'border':'solid 1px #398700','boxShadow':'0px 0px 8px #398700'});
+			});
+		    $('body input:text, input:password, textarea').blur(function() {
+				$(this).css({'border':'solid 1px #ccc','boxShadow':'none'});
+			});
+		    
+            $('.page-container form').submit(function(){
+            	var username = $(this).find('.username').val();
+                var password = $(this).find('.password').val();
+                var userPhone = $(this).find('.userPhone').val();
+                var code = $(this).find('.code').val();
+                if(username == '') {
+                    $(this).find('.username').focus();
+                    return false;
+                }
+                if(password == '') {
+                    $(this).find('.password').focus();
+                    return false;
+                }
+                if(userPhone == '') {
+                    $(this).find('.userPhone').focus();
+                    return false;
+                }
+                if(code == '') {
+                    $(this).find('.code').focus();
+                    return false;
+                }
+                
+				if (!/^[a-zA-Z0-9_-]|[\u4e00-\u9fa5]{2,16}$/.test(username)) {
+					wintq('请输入正确的用户名',2,2000,1,'');
+					$(this).find('.username').focus();
+					return false;
+				}
+				if (password.length<6) {
+					wintq('请输入6位数以上的密码',2,2000,1,'');
+					$(this).find('.password').focus();
+					return false;
+				}
+				if (!/^1[3|4|5|8][0-9]\d{4,8}$/.test(userPhone)) {
+					wintq('请输入正确的手机号',2,2000,1,'');
+					$(this).find('.userPhone').focus();
+					return false;
+				}
+				if (!/^[a-zA-Z0-9]{4}$/.test(code)) {
+					wintq('请输入正确的验证码',2,2000,1,'');
+					$(this).find('.code').focus();
+					return false;
+				}
+				wintq('正在提交，请稍后...',4,20000,0,'');
+				$.ajax({
+					url:'__APP__/Index/signup_do',
+					dataType:"json",
+					type:'POST',
+					cache:false,
+					data:'username='+username+'&password='+password+'&code='+code+'&userPhone='+userPhone,
+					success: function(data) {
+						if (data.s=='ok') {
+							wintq('注册成功',1,2000,0,'__APP__/Index');
+						}else {
+							rcode($('#verify'));
+							wintq(data.s,3,2000,1,'');
+						}
+					}
+				});
+				return false;
+            });
+
+            $('.page-container form .username, .page-container form .password').keyup(function(){
+                $(this).parent().find('.error').fadeOut('fast');
+            });
+
+          //更换验证码
+			function rcode(obj) {
+				obj.attr('src','__APP__/Public/verify/'+Math.random());
+			}
+			$('#verify').click(function() {
+				rcode($(this));
+			});
+        });
+        </script>
+    </head>
+
+    <body>
+        <div class="page-container" id="content">
+            <h1>注册</h1>
+            <form action="__APP__/Index/signup_do" method="post">
+                <input type="text" name="username" class="username" placeholder="用户名" maxlength="12">
+                <input type="password" name="password" class="password" placeholder="密码" maxlength="18">
+                <input  type="text" name="userPhone" class="userPhone" size="30" placeholder="手机号">
+                <input type="text" name="code" class="code" placeholder="验证码" maxlength="4" /> <img src="__APP__/Public/verify/" border="0" id="verify" align="middle"/>
+                <button type="submit" name="login">提交</button>
+                <div class="error"><span>+</span></div>
+            </form>
+            <div class="connect">
+                <p>Or <a href="__APP__/Index">登录</a></p>
+                <p>
+                    <a class="facebook" href=""></a>
+                    <a class="twitter" href=""></a>
+                </p>
+            </div>
+        </div>
+		<script type="text/javascript">
+		jQuery(function($){
+
+		    $.supersized({
+
+		        // Functionality
+		        slide_interval     : 4000,    // Length between transitions
+		        transition         : 1,    // 0-None, 1-Fade, 2-Slide Top, 3-Slide Right, 4-Slide Bottom, 5-Slide Left, 6-Carousel Right, 7-Carousel Left
+		        transition_speed   : 1000,    // Speed of transition
+		        performance        : 1,    // 0-Normal, 1-Hybrid speed/quality, 2-Optimizes image quality, 3-Optimizes transition speed // (Only works for Firefox/IE, not Webkit)
+
+		        // Size & Position
+		        min_width          : 0,    // Min width allowed (in pixels)
+		        min_height         : 0,    // Min height allowed (in pixels)
+		        vertical_center    : 1,    // Vertically center background
+		        horizontal_center  : 1,    // Horizontally center background
+		        fit_always         : 0,    // Image will never exceed browser width or height (Ignores min. dimensions)
+		        fit_portrait       : 1,    // Portrait images will not exceed browser height
+		        fit_landscape      : 0,    // Landscape images will not exceed browser width
+
+		        // Components
+		        slide_links        : 'blank',    // Individual links for each slide (Options: false, 'num', 'name', 'blank')
+		        slides             : [    // Slideshow Images
+		                                 {image : '__IMAGE_PATH__/index/backgrounds/1.jpg '},
+		                                 {image : '__IMAGE_PATH__/index/backgrounds/2.jpg '},
+		                                 {image : '__IMAGE_PATH__/index/backgrounds/3.jpg '}
+		                       ]
+
+		    });
+
+		});
+		</script>
+    </body>
+</html>
+
+

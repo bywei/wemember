@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>封锁新IP|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script type="text/javascript" src="__JS__/My97DatePicker/WdatePicker.js"></script>
+<script>
+$(document).ready(function() {
+	var $dldd=$('#dl dd');
+	$('.button').click(function() {
+		var 
+			ip=$dldd.find('.qtext').val(),
+			stime=$dldd.find('.Wdate').eq(0).val(),			//开始时间
+			etime=$dldd.find('.Wdate').eq(1).val(),			//结束时间
+			status=$dldd.find('.status:checked').val(),		//是否永久封禁
+			description=$dldd.find('.textarea').val(),		//描述
+			str=/^(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])\.(\d{1,2}|1\d\d|2[0-4]\d|25[0-5])$/;
+		if (!str.test(ip)) {
+			wintq('请填写正确的IP地址',2,1000,0,'');
+			return;
+		}
+		if (status==0) {
+			if (stime=='') {
+				wintq('请选择开始日期',2,1000,0,'');
+				return;
+			}
+			if (etime=='') {
+				wintq('请选择结束日期',2,1000,0,'');
+				return;
+			}
+		}
+		wintq('正在添加，请稍后...',4,20000,0,'');
+		$.ajax({
+			url:'__APP__/System/ipadd_do/',
+			dataType:'json',
+			type:'POST',
+			data:'ip='+ip+'&stime='+stime+'&etime='+etime+'&status='+status+'&description='+description,
+			success: function(data) {
+				if (data.s=='ok') {
+					wintq('添加成功',1,1000,0,'__APP__/System/ipadd/');
+				}else {
+					wintq(data.s,3,1000,1,'');
+				}
+			}
+		});
+	});
+	$dldd.find('input:radio').change(function() {
+		if ($(this).val()==1) {
+			$dldd.eq(1).find('input').val(null);
+			$dldd.eq(2).find('input').val(null);
+			$dldd.eq(1).hide();
+			$dldd.eq(2).hide();
+		}else {
+			$dldd.eq(1).show();
+			$dldd.eq(2).show();
+		}
+	});
+});
+</script>
+</head>
+<body>
+<div id="content">
+	<dl id="dl">
+    	<dt>添加封锁IP</dt>
+        <dd>
+        	<span class="dd_left">IP地址：</span>
+        	<span class="dd_right"><input type="text" name="ip" class="qtext" maxlength="20" /><font>* 输入如：202.20.1.0</font></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">开始日期：</span>
+        	<span class="dd_right">
+            <input id="d4311" class="Wdate" type="text" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'d4312\')||\'2050-10-01\'}'})"/>
+            <font>* 选择日期</font></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">结束日期：</span>
+        	<span class="dd_right">
+            	<input id="d4312" class="Wdate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'d4311\')}',maxDate:'2050-10-01'})"/>
+            	<font>* 选择日期</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">永久封禁：</span>
+            <span class="dd_right"><label><input type="radio" name="status" class="status" value="0" checked /> 否</label><label><input type="radio" name="status" class="status" value="1" /> 是</label></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">描述说明：</span>
+            <span class="dd_right"><textarea name="description" class="textarea"></textarea></span>
+        </dd>
+        <dd><input type="button" class="button" value="提 交" /></dd>
+    </dl>
+</div>
+</body>
+</html>

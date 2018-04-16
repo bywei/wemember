@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>添加用户|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script type="text/javascript" src="__JS__/check.js"></script>
+<script>
+$(document).ready(function() {
+	$('.button').click(function() {
+		var roleid=$('#dl dd .select').val();
+		var username=$('#dl dd .qtext').eq(0).val();
+		var password=$('#dl dd .qtext').eq(1).val();
+		var email=$('#dl dd .qtext').eq(2).val();
+		var description=$('#dl dd .textarea').val();
+		var status=$('#dl dd input:checked').val();
+		
+		if (!tcheck(roleid,'','用户角色ID获取失败')) { return false; }
+		if (!tcheck(roleid,'number','用户角色ID获取失败')) { return false; }
+		if (!tcheck(username,'username','请输入正确的用户名')) { return false; }
+		if (!tcheck(password,'6,18','请输入6~18位数的密码','length')) { return false; }
+		if (!tcheck(email,'email','请填写正确的邮箱地址')) { return false; }
+		if (!tcheck(description,'0,30','描述请在30个字符以内','length')) { return false; }
+		
+		wintq('正在添加，请稍后...',4,20000,0,'');
+		$.ajax({
+			url:'__APP__/User/useradd_do/',
+			dataType:'json',
+			type:'POST',
+			data:'roleid='+roleid+'&username='+username+'&password='+password+'&email='+email+'&description='+description+'&status='+status,
+			success: function(data) {
+				if (data.s=='ok') {
+					wintq('添加成功',1,1500,0,'__APP__/User/useradd/');
+				}else {
+					wintq(data.s,3,1000,1,'');
+				}
+			}
+		});
+	});
+});
+</script>
+</head>
+<body>
+<div id="content">
+	<dl id="dl">
+    	<dt>添加用户</dt>
+        <dd>
+        	<span class="dd_left">用户角色：</span>
+            <span class="dd_right">
+            	<select name="roleid" class="select">
+                    <volist name='volist' id='vo'>
+                    <option value="<{$vo.ID}>"><{$vo.Rolename}></option>
+                    </volist>
+                </select><font>* 选择用户角色，分配权限</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">用户名：</span>
+        	<span class="dd_right"><input type="text" class="qtext" maxlength="12" /><font>* 2～12位英文数字组合</font></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">密码：</span>
+        	<span class="dd_right"><input type="password" class="qtext" maxlength="18" /><font>* 6~18位密码组合</font></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">电子邮箱：</span>
+        	<span class="dd_right"><input type="text" class="qtext" maxlength="30" /><font>* 如：admin@qq.com</font></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">用户说明：</span>
+            <span class="dd_right"><textarea name="description" class="textarea"></textarea></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">状态：</span>
+            <span class="dd_right"><label><input type="radio" name="status" value="0" checked /> 正常</label><label><input type="radio" name="status" value="1" /> 锁定</label></span>
+        </dd>
+        <dd><input type="button" class="button" value="提 交" /></dd>
+    </dl>
+</div>
+</body>
+</html>

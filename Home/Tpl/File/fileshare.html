@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>共享文件列表|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script>
+$(document).ready(function() {
+	//快捷导航跳转
+	$('.select').eq(0).change(function() {
+		wintq('正在查询，请稍后...',4,20000,0,'');
+		location.href = '__APP__/File/filelist?sid='+$(this).val();
+	});
+	//快捷上传
+	$('.select').eq(1).change(function() {
+		wintq('正在跳转，请稍后...',4,20000,0,'');
+		location.href = '__APP__/File/uploadpic?sid='+$(this).val();
+	});
+	
+	//wintq('正在加载，请稍后....',4,20000,1,'');
+	//加载文件跟文件夹
+	$.get('__APP__/File/fileshareajax',function(data) {
+		//$('#wintq').remove();
+		//$('#zbody').remove();
+		$('.content').html(data);
+		//判断是否存在文件夹
+		if ($('#content .dira').size()==0 && $('#content .dir').size()==0) {
+			$('#content').append('<div class="cerr">暂无共享文件</div>');
+		}
+		//图片放大
+		$('#content .dir .f').dblclick(function() {
+			if ($(this).attr('src')!='') {
+				tcimg($(this).attr('src'));
+			}
+		});
+		//选中文件
+		$('#content .indel').click(function() {
+			if ($(this).attr('title')=='yes') {
+				$(this).removeClass('dird');
+				$(this).attr('title','no').find('.g').hide();
+			}else {
+				$(this).addClass('dird');
+				$(this).attr('title','yes').find('.g').show();
+			}
+		});
+	});
+});
+</script>
+</head>
+<body>
+<div id="content">
+	<h1>首页 > 云端文件 > 共享文件列表</h1>
+    <h2>
+    	<div class="h2_left">
+        	<a href="__ACTION__" class="whole">全部</a>
+        	<a href="javascript:;" class="f5" onclick="f5();">刷新</a>
+            <a href="javascript:history.back();" class="Retreat">后退</a>
+            <a href="javascript:history.go(1);" class="Advance">前进</a>
+            &nbsp;&nbsp;&nbsp;&nbsp;快捷目录导航：
+            <select name="sid" class="select">
+            	<option value="0">顶级目录</option>
+            	<volist name="list" id="vo">
+            	<option value="<{$vo.ID}>"><if condition="$vo.Sid neq 0">└</if><{$vo.html}><{$vo.classname}></option>
+                </volist>
+            </select>
+            &nbsp;&nbsp;&nbsp;&nbsp;快捷上传：
+            <select name="sid" class="select">
+            	<option value="0">顶级目录</option>
+            	<volist name="list" id="vo">
+            	<option value="<{$vo.ID}>"><if condition="$vo.Sid neq 0">└</if><{$vo.html}><{$vo.classname}></option>
+                </volist>
+            </select>
+        </div>
+    </h2>
+    <h3>
+    	<a href="__APP__/File/uploadpic">上传图片</a>
+        <a href="__APP__/File/uploadfile">上传文件</a>
+        <a href="__APP__/File/fileshare" class="h3a">共享文件</a>
+    </h3>
+    <div class="content"></div>
+    <div id="page">当前共有 <strong><{$fileinfo['count']}></strong> 个共享文件&nbsp;&nbsp;&nbsp;&nbsp;<strong>云端文件统计 —— </strong>共享文件总数：<strong><{$fileinfo['filecount']}></strong> 个&nbsp;&nbsp;&nbsp;&nbsp;占用空间：<strong><{$fileinfo['filesum']/1024/1024|round=2}>M</strong></div>
+    <div style="clear:both"></div>
+</div>
+</body>
+</html>

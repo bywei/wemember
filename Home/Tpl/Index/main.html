@@ -1,0 +1,147 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title><{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/main.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script>
+window.onload=function() {
+	//退出登录
+	function quit() {
+		$('body #quit').click(function(event) {
+			event.preventDefault();
+			if (confirm('确定要退出吗？')) {
+				window.top.location.href='__APP__/Index/quit';
+			}
+		});
+	}
+	quit();
+	$('#home').click(function() {
+		window.top.location.href='__APP__/Index/main';
+	});
+    $('#main #user_save').click(function() {
+		popload('修改密码',580,230,'__APP__/User/uedit/');
+		addDiv($('#iframe_pop'));
+	});
+	//一键清空缓存
+	$('#main #cache').click(function() {
+		if (confirm('确定要清空所有缓存吗？')) {
+			wintq('正在清除缓存，请稍后...',4,60000,0,'');
+			$.ajax({
+				url:'__APP__/Common/clearcache/',
+				dataType:'JSON',
+				type:'POST',
+				data:'clear=ok',
+				success: function(data) {
+					if (data.s=='ok') {
+						wintq('更新缓存成功！',1,1000,1,'');
+					}else {
+						wintq(data.s,3,1000,1,'');
+					}
+				}
+			});
+		}
+	});
+	//跟单提醒
+	function remind() {
+		popload('新消息提醒',500,300,'__APP__/Public/remind/','z');
+		addDiv($('#iframe_pop'));
+	}	
+	$('#Remindh').click(function() {
+		remind();
+	});
+	//事务提醒
+	function Link() {
+		$.ajax({
+			url:'__APP__/Common/link',
+			dataType:"json",
+			type:'POST',
+			data:'link='+Math.random(),
+			success: function(data){
+				if (data.s > 0) {
+					$('#Remindh').css('background','url(__IMAGE__/sessi.gif) no-repeat left top');
+					$('#Remindh').text(data.s);
+					$('#Remindh').attr('title','当前有：'+data.s+'个客户需要跟进');
+				}else {
+					$('#Remindh').css('background','url(__IMAGE__/sess.png) no-repeat left top');
+				}
+			}
+		});
+	}
+	setInterval(Link,90*60);
+	Link();
+}
+$(function() {
+	for (i=0; i<$('#left dl').size(); i++) {
+		$dldd=$('#left dl').eq(i);
+		if ($dldd.find('dd').size() < 1) {
+			$dldd.remove();
+		}
+	}
+	$('#ul li .a').click(function() {
+		$('#ul li .a').removeClass('lia');
+		$(this).addClass('lia');
+		$('#ul li dl').stop().slideUp('fast');
+		var $dl = $(this).parents('li').find('dl');
+		$dl.stop().slideToggle('fast');
+		$dl.find('a').click(function() {
+			$('#ul li dl dd a').removeClass('dla');
+			$(this).addClass('dla');
+		});
+	});
+});
+</script>
+</head>
+<body>
+<div id="Remindh">0</div>
+<div id="main">
+	<div id="header">
+    	<div id="logo"><{$configcache['Title']}></div>
+        <div id="cache" title="清空缓存"></div>
+        <div id="home" title="首页"></div>
+        <div id="all" title="全局导航"></div>
+        <div id="quit" title="退出登录"></div>
+    </div>
+    <div id="top">
+    	<div class="top_left">
+        	<div id="jnkc"></div><script>setInterval("jnkc.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);</script>
+        	<div class="top_left1">
+            欢迎您：<font><{$session['Username']}></font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            本次是第 <font><{$session['Logincount']}></font> 次登录&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            登录IP：<{$session['Loginip']}>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            登录位置：<font><{$session['Loginarea']}></font>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="user_save"><img src="__IMAGE__/user4.png" border="0" height="16" />修改密码</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="cache"><img src="__IMAGE__/cache.png" border="0" height="16" />清空缓存</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="quit"><img src="__IMAGE__/exit.png" border="0" height="16" />退出登录</span>
+            </div>
+        </div>
+        <div class="top_right">
+        	<a href="javascript:;" onclick="f5();"><img src="__IMAGE__/arrow_refresh.png" border="0" title="刷新" /></a>
+        </div>
+    </div>
+    <div id="left">
+    	<ul id="ul">
+        	<volist name="list" id="li">
+        	<li><a class="a" href="<if condition="$li.ModuleUrl eq ''">javascript:;<else />__APP__/<{$li.ModuleUrl}></if>" target="c"><img src="<{$li.ModuleImg}>" height="26" /><{$li.ModuleName}></a>
+            	<dl>
+            	<foreach name="volist" item="vo">
+            		<if condition="$li['ID'] eq $vo['Sid']">
+                	<dd><a href="<if condition="$vo.ModuleUrl eq ''">javascript:;<else />__APP__/<{$vo.ModuleUrl}></if>" target="c"><img src="<{$vo.ModuleImg}>" /><{$vo.ModuleName}></a></dd>
+                    </if>
+                </foreach>
+                </dl>
+            </li>
+            </volist>
+        </ul>
+    </div>
+    <div class="left" title="收缩"></div>
+    <div id="right">
+    	<iframe id="ifdd" name="c" height="100%" width="100%" border="0" frameborder="0" src="__APP__/Index/content/">浏览器不支持嵌入式框架，或被配置为不显示嵌入式框架。</iframe>
+    </div>
+</div>
+</body>
+</html>

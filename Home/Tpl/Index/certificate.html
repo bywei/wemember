@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<!-- saved from url=(0119)http://jinhuo.zuodanli.com/WxMall/Authorization.aspx?p=8002F3074084D6FCB9E0D0846AD9E96BF9C0B855D29B278DEE6B19E77AF6DC80 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <title>授权证书</title>
+    <link rel="stylesheet" href="__CSS_PATH__/index/frozen.css">
+    <link rel="stylesheet" href="__CSS_PATH__/index/certificate.css">
+</head>
+<body class="loginbg">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMjExNDA1NTAyM2RkJw0YQHcRXe5Pcy34awQAUSPdeB3pvd+Xl8jc0EjPRho=">
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="8BE1B8A5">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAAZXh0GGRjVvOHYTWQJwJUeaT/Bnpuy+nH6ksNuqf4WyydLsT+ii+MlWRc2otZ0yK5/wENKSzzJgtbmoPKdP+Vpc5FlZ2bisf2XLBEwUHTZuwlStyueEP9C1Y7OkQZdzYnfnVeJiWACrpb+BL0V0OiryB/Hdr+KzfGNWWQHlSkhF5g==">
+</div>
+        <section class="ui-container d-bor-bottom">
+            <img alt="" src="__IMAGE_PATH__/index/Authorizationbg.png" width="100%">
+            <div style="padding:10px 46px; font-size:12px; line-height:18px; position:absolute; left:0; top:0;">
+                <img alt="" src="__IMAGE_PATH__/index/Authorizationtop.png" width="100%">
+                <div style="background:url(__IMAGE_PATH__/index/signet.png) no-repeat right bottom;padding-bottom:8px;">
+                <p>
+                    兹授权：<br>
+                    姓名：<input name="Name" type="text" id="Name" readonly="" style=" text-align:center; border:0; border-bottom:1px solid #000; background:none;" value="<{$client['CompanyName']}>">为我公司健佰优全套产品微店长。本授权书自发布之日起一年内有效
+                </p>
+                <p style="padding-top:10px;">
+                    授权号：<input name="Mobile" type="text" id="Mobile" readonly="" style=" width:80px; text-align:center; border:0; border-bottom:1px solid #000; background:none;" value="<{$client['Username']}>"><br>
+                    备注：本授权书只供微信和实体店微店长使用
+                    <br>
+                    （不包括淘宝、天猫商城、阿里巴巴等电商平台）
+                    <br>
+                    被授权人在授权期间不得销售其他厂家同类产品；不得违背集团价格规定；不得做虚假宣传；不得以传销方式进行销售。如违反上述规定，集团将停止供货，由此造成的后果全部由被授权人承担，与授权单位无关。
+                    <br>
+                    南京健佰优生物科技有限公司拥有此授权证书解释权。
+
+                </p>
+                <p style="text-align:right;padding-top:10px;">授权单位：南京健佰优生物科技有限公司</p>
+                <p style="text-align:right;">授权时间：<input name="Year" type="text" id="Year" readonly="" style=" width:40px; text-align:center; border:0; border-bottom:1px solid #000; background:none;" value="<{$dtime['yyyy']}>">年<input name="Month" type="text" id="Month" readonly="" style=" width:20px; text-align:center; border:0; border-bottom:1px solid #000; background:none;" value="<{$dtime['mm']}>">月<input name="Day" type="text" id="Day" readonly="" style=" width:20px; text-align:center; border:0; border-bottom:1px solid #000; background:none;" value="<{$dtime['dd']}>">日</p>
+                </div>
+                </div>
+        </section>
+        <div id="CommonHintUC_hintDialog" class="ui-dialog">
+    <div class="ui-dialog-cnt tanchuan">
+      <header class="ui-dialog-hd ui-border-b">
+                  <h3 id="hinthead"></h3>
+                  <i class="ui-dialog-close" data-role="button" id="dbbutton"></i>
+              </header>
+        <div class="ui-dialog-bd">
+            <h4 id="hinttitle" style="display:none"></h4>
+            <div id="hintcontent"></div>
+        </div>
+        <div class="ui-dialog-ft">
+            <button type="button" data-role="button" id="btncancel" style="display:none">取消</button>
+            <button type="button" data-role="button" id="btnconfirm">确定</button>
+        </div>
+    </div>        
+</div>
+</body></html>

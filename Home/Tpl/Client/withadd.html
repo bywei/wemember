@@ -1,0 +1,135 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>新建跟单记录|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script type="text/javascript" src="__JS__/My97DatePicker/WdatePicker.js"></script>
+<script>
+$(document).ready(function() {
+	var $dldd=$('#dl dd');
+	$('.button').click(function() {
+		var 
+			cid=$('#dl input:hidden').val(),					//客户编号
+			nameid=$dldd.find('.select').eq(0).val(),			//跟单对像
+			wast=$dldd.find('.select').eq(1).val(),				//跟单类型
+			nexttime=$dldd.find('.Wdate').eq(0).val(),			//开始时间
+			remindtime=$dldd.find('.Wdate').eq(1).val(),		//结束时间
+			description=$dldd.find('.textarea').val();			//描述
+			status=$dldd.find('.status:checked').val();			//状态
+			remind=$dldd.find('.remind:checked').val();			//是否完成
+		if (nexttime=='') {
+			wintq('请选择下次联系日期',2,1000,0,'');
+			return;
+		}
+		wintq('正在处理，请稍后...',4,20000,0,'');
+		$.ajax({
+			url:'__APP__/With/withadd_do/',
+			dataType:'json',
+			type:'POST',
+			data:'cid='+cid+'&nameid='+nameid+'&wast='+wast+'&nexttime='+nexttime+'&remindtime='+remindtime+'&description='+description+'&status='+status+'&remind='+remind,
+			success: function(data) {
+				if (data.s=='ok') {
+					wintq('添加成功',1,1000,0,'__APP__/With/withadd?Cid=<{$result["ID"]}>');
+				}else {
+					wintq(data.s,3,1000,1,'');
+				}
+			}
+		});
+	});
+});
+</script>
+</head>
+<body>
+<div id="content">
+	<dl id="dl">
+    	<dt>新的跟单记录</dt>
+        <dd>
+        	<span class="dd_left">进货人：</span>
+        	<span class="dd_right"><input name="consigneeName" type="text" class="ctext" size="50" maxlength="12"/></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">联系电话：</span>
+        	<span class="dd_right"><input name="phone" type="text" class="ctext" size="50" maxlength="12"/></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">进货数量：</span>
+        	<span class="dd_right"><input name="goodsNum" type="text" class="ctext" size="50" maxlength="10"/></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">收货地址：</span>
+        	<span class="dd_right"><input name="address" type="text" class="ctext" size="50" maxlength="100"/></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">公司/客户名：</span>
+        	<span class="dd_right"><{$result['CompanyName']}></span>
+        </dd>
+        <dd><input type="hidden" value="<{$result['ID']}>" />
+        	<span class="dd_left">跟单对象：</span>
+            <span class="dd_right">
+              <select name="nameid" class="select">
+                  <volist name="contactlist" id="vo">
+                      <option value="<{$vo.ID}>"><{$vo.ContactName}></option>
+                  </volist>
+              </select>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">跟单类型：</span>
+            <span class="dd_right">
+              <select name="Wast" class="select">
+                  <volist name="volist" id="vo">
+                      <if condition="$vo.Sid eq 5">
+                      <option value="<{$vo.ID}>"><{$vo.MenuName}></option>
+                      </if>
+                  </volist>
+              </select>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">下次联系：</span>
+        	<span class="dd_right">
+            	<input id="d4312" class="Wdate" type="text" onFocus="WdatePicker({minDate:'#F{$dp.$D(\'d4311\')}',maxDate:'2050-10-01',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+            	<font>* 下一次联系时间</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">提醒日期：</span>
+        	<span class="dd_right">
+            	<!--<input class="Wdate" name="Birthday" type="text" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})">-->
+                
+            	<input id="d4311" class="Wdate" type="text" onFocus="WdatePicker({maxDate:'#F{$dp.$D(\'d4312\')||\'2050-10-01\'}',dateFmt:'yyyy-MM-dd HH:mm:ss'})"/>
+            	<font>* 下次联系前提醒</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">描述说明：</span>
+            <span class="dd_right"><textarea name="description" class="textarea"></textarea></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">是否完成：</span>
+        	<span class="dd_right">
+            	<label><input type="radio" value="1" name="remind" class="remind"/> 完成</label>
+                <label><input type="radio" value="0" name="remind" class="remind" checked="checked"/> 未完成</label>
+                <font>* 是否已完成跟进</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">订单状态：</span>
+        	<span class="dd_right">
+            	<label><input type="radio" value="1" name="status" class="status" checked="checked"/> 待发货</label>
+            	<label><input type="radio" value="2" name="status" class="status"/> 已发货</label>
+            	<label><input type="radio" value="3" name="status" class="status"/> 已取消</label>
+                <label><input type="radio" value="0" name="status" class="status"/> 已结单</label>
+                <font>* 已结单后将不再提醒</font>
+            </span>
+        </dd>
+        <dd><input type="button" class="button" value="提 交" /></dd>
+    </dl>
+</div>
+</body>
+</html>

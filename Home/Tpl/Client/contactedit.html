@@ -1,0 +1,115 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>修改联系人|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script type="text/javascript" src="__JS__/check.js"></script>
+<script type="text/javascript" src="__JS__/My97DatePicker/WdatePicker.js"></script>
+<script>
+$(document).ready(function() {
+	var $client = $('#client');
+	$('.submit').click(function() {
+		var 
+			ContactName = $client.find('.dtext').val(),
+			Qq = $client.find('.ctext').eq(0).val(),
+			Skype = $client.find('.ctext').eq(1).val(),
+			Alww = $client.find('.ctext').eq(2).val(),
+			Fax = $client.find('.ctext').eq(3).val();
+			Phone = $client.find('.ctext').eq(4).val(),
+			Tel = $client.find('.ctext').eq(5).val();
+			Email = $client.find('.ctext').eq(6).val();
+			Content = $client.find('.textarea').val();
+					
+		if (!tcheck(ContactName,'0,30','联系人名字请在30个字符以内','length')) { return false; }
+		if (!tcheck(Qq,'0,30','QQ号码请在30个字符以内','length')) { return false; }
+		if (!tcheck(Skype,'0,30','Skype号码请在30个字符以内','length')) { return false; }
+		if (!tcheck(Alww,'0,30','旺旺号请在30个字符以内','length')) { return false; }
+		if (!tcheck(Phone,'0,30','手机号码请在30个字符以内','length')) { return false; }
+		if (!tcheck(Tel,'0,20','电话号码请在20个字符以内','length')) { return false; }
+		if (!tcheck(Fax,'0,20','传真请在20个字符以内','length')) { return false; }
+		if (!tcheck(Email,'0,40','Email请在40个字符以内','length')) { return false; }
+		if (!tcheck(Content,'0,1000','备注说明请在1000个字符以内','length')) { return false; }
+		
+		if (!tcheck(Qq,'number','QQ号码必须是数字')) { return false; }
+		if (!tcheck(Phone,'number','手机号码必须是数字')) { return false; }
+		wintq('正在处理，请稍后...',4,20000,0,'');
+		$('form').submit();
+	});
+});
+</script>
+</head>
+<body>
+
+<div id="content" style="padding-bottom:0;">
+    <form action="__APP__/Client/contactedit_do" method="post">
+    <table id="client" border="1" bordercolor="#CCCCCC" cellpadding="0" cellspacing="0">
+    	<tr class="tr">
+        	<td class="left">客户/公司：</td>
+        	<td><{$result['CompanyName']}></td>
+            <td class="left">联系人：</td>
+        	<td><input name="ContactName" type="text" class="dtext" size="20" value="<{$result['ContactName']}>" /></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">性别：</td>
+        	<td>
+            	<select name="Sex" class="select">
+                	<option value="男" <if condition="$result['Sex'] eq '男'">selected</if>>男</option>
+                    <option value="女" <if condition="$result['Sex'] eq '女'">selected</if>>女</option>
+                </select>
+            </td>
+            <td class="left">职位：</td>
+            <td>
+            	<select name="Post" class="select">
+                	<volist name="volist" id="vo">
+                    	<if condition="$vo.Sid eq 4">
+                		<option value="<{$vo.ID}>" <if condition="$vo.ID eq $result['Post']">selected</if> ><{$vo.MenuName}></option>
+                        </if>
+                    </volist>
+                </select>
+            </td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">腾讯QQ：</td>
+        	<td><input name="Qq" type="text" class="ctext" size="30" value="<{$result['Qq']}>" /></td>
+            <td class="left">Msn/Skype：</td>
+            <td><input name="Skype" type="text" class="ctext" size="30" value="<{$result['Skype']}>" /></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">阿里旺旺：</td>
+        	<td><input name="Alww" type="text" class="ctext" size="30" value="<{$result['Alww']}>" /></td>
+            <td class="left">传真：</td>
+            <td><input name="Fax" type="text" class="ctext" size="30" value="<{$result['Fax']}>" /></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">手机号码：</td>
+        	<td><input name="Phone" type="text" class="ctext" size="30" value="<{$result['Phone']}>" /></td>
+            <td class="left">电话号码：</td>
+            <td><input name="Tel" type="text" class="ctext" size="30" value="<{$result['Tel']}>" /></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">Email：</td>
+        	<td><input name="Email" type="text" class="ctext" size="30" value="<{$result['Email']}>" /></td>
+            <td class="left">生日：</td>
+            <td><input class="Wdate" name="Birthday" value="<{$result['Birthday']}>" type="text" onfocus="WdatePicker({startDate:'%y-%M-01 00:00:00',dateFmt:'yyyy-MM-dd HH:mm:ss',alwaysUseStartDate:true})"></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">备注说明：</td>
+        	<td colspan="3"><textarea name="Content" class="textarea" style="width:600px; height:60px; margin:6px 0px;"><{$result['Content']}></textarea></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">录入时间：</td>
+        	<td><{$result['Dtime']}></td>
+            <td class="left">最后更新：</td>
+        	<td><{$result['FinalTime']}></td>
+        </tr>
+    </table><input type="hidden" name="ID" value="<{$result['ID']}>" />
+    <input type="submit" class="submit" value="提交" style="margin:20px 0 0 30px;" />
+    </form>
+</div>
+</body>
+</html>

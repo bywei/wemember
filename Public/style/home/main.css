@@ -1,0 +1,47 @@
+@charset "utf-8";
+/* CSS Document */
+* { margin:0; padding:0; }
+body { margin:0; padding:0; overflow:hidden; }
+#main { width:100%; height:100%; margin:0 auto; }
+#main #header { float:left; width:100%; height:40px; background:#333; position:relative; }
+#main #header #logo { position:absolute; left:20px; height:40px; line-height:40px; font-family:"微软雅黑"; font-size:14px; color:#fff; text-align:left; }
+#main #header #quit { position:absolute; right:10px; width:50px; height:40px; background:url(../../image/home/quit.png) no-repeat center 7px;}
+#main #header #quit:hover { background:#000 url(../../image/home/quit.png) no-repeat center 7px; cursor:pointer;  }
+#main #header #all { position:absolute; right:60px; width:50px; height:40px; background:url(../../image/home/hover.png) no-repeat center top;}
+#main #header #all:hover { background:#000 url(../../image/home/hover.png) no-repeat center top; cursor:pointer;  }
+#main #header #home { position:absolute; right:110px; width:50px; height:40px; background:url(../../image/home/home2.png) no-repeat center 7px;}
+#main #header #home:hover { background:#000 url(../../image/home/home2.png) no-repeat center 7px; cursor:pointer;  }
+
+#main #header #cache { position:absolute; right:160px; width:50px; height:40px; background:url(../../image/home/cache.png) no-repeat center 7px;}
+#main #header #cache:hover { background:#000 url(../../image/home/cache.png) no-repeat center 7px; cursor:pointer;  }
+
+#main #top { width:100%; height:30px; line-height:30px; background:#eee; float:left; border-bottom:solid 1px #ccc; font-size:12px; color:#333; font-family:"微软雅黑"; }
+#main #top .top_left { float:left; width:auto; height:30px; line-height:30px; background:url(../../image/home/datebox_arrow.png) no-repeat 15px center; text-indent:40px; text-align:left; }
+#main #top .top_left font { font-size:12px; }
+#main #top .top_left #jnkc { float:left; }
+#main #top .top_left .top_left1 { float:left; }
+#main #top .top_left .top_left1 font { color:#F03; }
+#main #top .top_left .top_left1 span img { position:relative; top:3px; padding-right:4px; }
+#main #top .top_left .top_left1 span:hover { color:#f00; cursor:pointer; text-decoration:underline; }
+#main #top .top_right { float:right; height:30px; line-height:30px; margin-right:20px; }
+#main #top .top_right a { margin-left:10px; position:relative; top:4px;}
+
+#main #left { float:left; width:160px; height:100%; background:#f9f9f9; border-right:1px solid #d5d5d5; font-family:"微软雅黑"; position:relative; overflow-x:hidden; }
+.left { width:14px; height:34px; background:url(../../image/home/left.png) no-repeat -1px -4px; position:absolute; left:156px; top:44%; }
+.left:hover { cursor:pointer; }
+
+#main #left #ul { width:160px; height:auto; font-size:14px; color:#333; list-style:none; }
+#main #left #ul li { line-height:40px; border-bottom:solid 1px #ddd; position:relative; }
+#main #left #ul li a { display:block; width:160px; height:40px; line-height:40px; text-indent:66px; text-decoration:none; color:#333; }
+#main #left #ul li .lia { background:#ddd; color:#000; }
+#main #left #ul li img { border:none; position:absolute; left:26px; top:7px; }
+
+#main #left #ul dl { display:none; width:160px; height:auto; background:#fff; z-index:999; border:none; padding:8px 0;}
+#main #left #ul dl dd { background:#fff; position:relative; }
+#main #left #ul dl dd:hover { background:#fff; }
+#main #left #ul dl dd a { display:block; width:160px; height:40px; line-height:40px; text-decoration:none; color:#333; text-indent:62px;  }
+#main #left #ul dl dd a:hover { background:#f9f9f9; color:#06f}
+#main #left #ul dl dd .dla { background:#f0faff; color:#06f }
+#main #left #ul dl dd img { border:none; height:22px; position:absolute; left:30px; top:9px; }
+
+#main #right { float:left; width:auto; height:100%; margin:0 0 0 15px; background:#fff; }

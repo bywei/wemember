@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>新建文件夹|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script type="text/javascript" src="__JS__/check.js"></script>
+<script>
+$(document).ready(function() {
+	var $dldd = $('#dl dd');
+	$('.button').click(function() {
+		var 
+			classname=$dldd.find('.qtext').eq(0).val(),					//分类目录名称
+			sid=$dldd.find('.select').val(),								//目录
+			description=$dldd.find('.textarea').val(),					//描述
+			sortid=$dldd.find('.qtext').eq(1).val(),						//排序ID
+			status=$dldd.find('.status:checked').val();					//是否永久封禁
+		
+		if (!tcheck(classname,'','请填写分类目录名称')) { return false; }
+		if (!tcheck(classname,'2,20','分类名称请在20个字符以内','length')) { return false; }
+		if (!tcheck(sid,'','目录ID获取失败')) { return false; }
+		if (!tcheck(sid,'number','目录ID获取失败')) { return false; }
+		if (!tcheck(description,'0,30','描述请在30个字符以内','length')) { return false; }
+		if (!tcheck(sortid,'','请填写排序ID')) { return false; }
+		if (!tcheck(sortid,'number','请填写正确的排序ID，必须是数字')) { return false; }
+		if (!tcheck(status,'','状态ID获取失败')) { return false; }
+		if (!tcheck(status,'number','状态ID获取失败')) { return false; }
+		
+		wintq('正在处理，请稍后...',4,20000,0,'');
+		$.ajax({
+			url:'__APP__/File/fileclass_add_do',
+			dataType:'json',
+			type:'POST',
+			data:'classname='+classname+'&sid='+sid+'&description='+description+'&sortid='+sortid+'&status='+status,
+			success: function(data) {
+				if (data.s=='ok') {
+					wintq('添加成功',1,1000,0,'__APP__/File/fileclass_add?sid=<{$sid}>');
+				}else {
+					wintq(data.s,3,1000,1,'');
+				}
+			}
+		});
+	});
+});
+</script>
+</head>
+<body>
+<div id="content">
+	<dl id="dl">
+    	<dt>添加分类目录</dt>
+        <dd>
+        	<span class="dd_left">目录名称：</span>
+        	<span class="dd_right"><input type="text" name="classname" class="qtext" maxlength="20" /><font>* 输入如：我的图片</font></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">上级目录：</span>
+            <span class="dd_right">
+            	<select name="sid" class="select">
+                    <option value="0">顶级目录</option>
+                    <foreach name="list" item="l">
+                    	<option value="<{$l.ID}>" <if condition="$sid eq $l['ID']">selected</if> ><if condition="$l['html'] neq ''">└<{$l.html}></if><{$l.classname}></option>
+                    </foreach>
+                </select><font>* 选择模块目录</font>
+            </span>
+        </dd>
+        <dd>
+        	<span class="dd_left">描述说明：</span>
+            <span class="dd_right"><textarea name="description" class="textarea"></textarea></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">排序ID：</span>
+        	<span class="dd_right"><input type="text" name="sortid" class="qtext" maxlength="10" value="0" /><font>* 排序ID</font></span>
+        </dd>
+        <dd>
+        	<span class="dd_left">状态：</span>
+            <span class="dd_right"><label><input type="radio" name="status" class="status" value="0" checked /> 启用</label><label><input type="radio" name="status" class="status" value="1" /> 禁用</label></span>
+        </dd>
+        <dd><input type="button" class="button" value="提 交" /></dd>
+    </dl>
+</div>
+</body>
+</html>

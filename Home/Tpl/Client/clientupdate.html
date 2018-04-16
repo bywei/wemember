@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>会员管理</title>
+<!-- for-mobile-apps -->
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="keywords" content="会员管理" />
+<script type="application/x-javascript">
+	 addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); 
+	 function hideURLbar(){ window.scrollTo(0,1); } 
+</script>
+<!-- //for-mobile-apps -->
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/jquery-ui.css">
+<link rel="stylesheet" type="text/css" href="__CSS_PATH__/client/style.css"/>
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+<script>
+function quit() {
+    window.top.location.href='__APP__/Front/quit';
+}
+$(document).ready(function() {
+	 $('#clientUpdate').submit(function(){
+		 var cid = $("input[name='cid']").val();
+		 var username = $("input[name='username']").val();
+		 var password = $("input[name='password']").val();
+		 var password1 = $("input[name='password1']").val();
+		 var password2 = $("input[name='password2']").val();
+		 var description = $("#description").val();
+		if(cid == ''){
+			wintq('请重新登录',1,1000,0,'__APP__/Index?');
+		}
+		if(password == ''){
+			$("input[name='password']").focus();
+			return false;
+		}
+		if(password1 == ''){
+			$("input[name='password1']").focus();
+			return false;
+		}
+		if(password2 == '' || password1 != password2){
+			wintq('请输入一致的新密码',2,2000,1,'');
+			$("input[name='password2']").focus();
+			return false;
+		}
+		if (password1.length<6) {
+			wintq('请输入6位数以上的密码',2,2000,1,'');
+			$("input[name='password1']").focus();
+			return false;
+		}
+		if (password2.length<6) {
+			wintq('请输入6位数以上的密码',2,2000,1,'');
+			$("input[name='password2']").focus();
+			return false;
+		}
+		wintq('正在处理，请稍后...',4,20000,0,'');
+		$.ajax({
+			url:'__APP__/Front/clientupdate_do',
+			dataType:"json",
+			type:'POST',
+			cache:false,
+			data:'cid='+cid+'&username='+username+'&password='+password+'&password1='+password1,
+			success: function(data) {
+				if (data.s=='ok') {
+					wintq('修改成功',1,1000,0,'__APP__/Front/clientupdate');
+				}else {
+					wintq(data.s,3,1000,1,'');
+				}
+			}
+		});
+		return false;
+	 });
+});
+</script>
+</head>
+<body>
+
+	<div class="main">
+		<div class="w3_agile_main_grids">
+			<div class="agileits_w3layouts_main_grid">
+				<form id="clientUpdate" action="__APP__/Front/clientupdate_do" method="post">
+					<div class="agile_main_grid_left">
+							<div class="w3_agileits_main_grid_left_grid">
+								<h3><a href="__APP__/Front/certificate">查看授权证书</a></h3>
+							</div>
+						<div class="w3_agileits_main_grid_left_grid">
+						<h3>修改密码</h3>
+							<input type="hidden" name="cid" value="<{$client['ID']}>"/>
+							<input type="text" name="username" disabled="disabled" value="<{$client['Username']}>"/>
+							<input type="password" name="password" placeholder="请输入旧密码" required=""/>
+							<input type="password" name="password1" placeholder="请输入新密码" required=""/>
+							<input type="password" name="password2" placeholder="请确认新密码" required=""/>
+						</div>
+					</div>
+					<div class="clear"> </div>
+					<input type="submit" value="保存"/>
+				</form>
+				<input type="button" class="btnloginout" onclick="quit();" value="退出"/>
+			</div>
+		</div>
+		<div class="agileits_copyright">
+			<p>如有疑问请及时联系客服人员</p>
+		</div>
+	</div>
+</body>
+</html>

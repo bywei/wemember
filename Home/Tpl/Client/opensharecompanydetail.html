@@ -1,0 +1,116 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>共享客户信息详情|<{$configcache['Title']}></title>
+<link rel="stylesheet" type="text/css" href="__CSS__/content.css"  />
+<link rel="stylesheet" type="text/css" href="__CSS__/public.css"  />
+<script type="text/javascript" src="__JS__/jquery.js"></script>
+<script type="text/javascript" src="__JS__/Public.js"></script>
+<script type="text/javascript" src="__JS__/winpop.js"></script>
+</head>
+<body>
+
+<div id="content" style="padding-bottom:20px;">
+    <h3>
+    	<a href="javascript:;" onclick="location.reload();">刷新</a>
+    	<a href="__APP__/Client/openshare_company_detail?id=<{$result['ID']}>" class="h3a">客户资料</a>
+    	<a href="__APP__/Client/openshare_contact_list?Cid=<{$result['ID']}>">联系人信息</a>
+    </h3>
+    <table id="client" border="1" bordercolor="#CCCCCC" cellpadding="0" cellspacing="0">
+    	<tr class="tr">
+        	<td class="left">客户/公司：</td>
+        	<td><{$result['CompanyName']}></td>
+            <td class="left">联系人：</td>
+        	<td><{$result['ContactName']}></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">详细地址：</td>
+        	<td><{$result['Address']}></td>
+            <td class="left">邮编：</td>
+            <td><{$result['ZipCode']}></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">网站地址：</td>
+        	<td><{$result['WebUrl']}></td>
+            <td class="left">从事行业：</td>
+            <td>
+                <volist name="volist" id="vo">
+                    <if condition="$vo.Sid eq 26">
+                    <if condition="$vo.ID eq $result['Industry']"><{$vo.MenuName}></if>
+                    </if>
+                </volist>
+            </td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">客户类型：</td>
+        	<td>
+                <volist name="volist" id="vo">
+                    <if condition="$vo.Sid eq 1">
+                    <if condition="$vo.ID eq $result['ClientType']"><{$vo.MenuName}></if>
+                    </if>
+                </volist>
+            </td>
+            <td class="left">客户级别：</td>
+            <td>
+                <volist name="volist" id="vo">
+                    <if condition="$vo.Sid eq 3">
+                    <if condition="$vo.ID eq $result['ClientLevel']"><{$vo.MenuName}></if>
+                    </if>
+                </volist>
+            </td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">客户来源：</td>
+        	<td>
+                <volist name="volist" id="vo">
+                    <if condition="$vo.Sid eq 2">
+                    <if condition="$vo.ID eq $result['ClientSource']"><{$vo.MenuName}></if>
+                    </if>
+                </volist>
+            </td>
+            <td class="left">跟进情况：</td>
+            <td>
+                <volist name="volist" id="vo">
+                    <if condition="$vo.Sid eq 54">
+                    <if condition="$vo.ID eq $result['FollowUp']"><{$vo.MenuName}></if>
+                    </if>
+                </volist>
+            </td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">跟单类型：</td>
+        	<td>
+                <volist name="volist" id="vo">
+                    <if condition="$vo.Sid eq 5">
+                    <if condition="$vo.ID eq $result['Wast']"><{$vo.MenuName}></if>
+                    </if>
+                </volist>
+            </td>
+            <td class="left">客户意向：</td>
+            <td>
+                <volist name="volist" id="vo">
+                    <if condition="$vo.Sid eq 57">
+                    <if condition="$vo.ID eq $result['Intent']"><{$vo.MenuName}></if>
+                    </if>
+                </volist>
+            </td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">主营项目：</td>
+        	<td colspan="3"><{$result['MainItems']}></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">其它/备注：</td>
+        	<td colspan="3"><{$result['Message']}></td>
+        </tr>
+    	<tr class="tr">
+        	<td class="left">录入时间：</td>
+        	<td><{$result['Dtime']}></td>
+            <td class="left">最后更新：</td>
+        	<td><{$result['FinalTime']}></td>
+        </tr>
+    </table>
+</div>
+</body>
+</html>
