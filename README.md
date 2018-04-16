@@ -1,6 +1,6 @@
-#微店客户进货管理系统(wemember)
-  使用ThinkPHP开发，实现微商手机端进货，可对接微信公众号或者移动M站。
-  ##APP演示效果如下：\<br>  
+#微店客户进货管理系统(wemember)\
+  使用ThinkPHP开发，实现微商手机端进货，可对接微信公众号或者移动M站
+##APP演示效果如下：
   ![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/app1.png)
   ![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/app2.png)
   ![screenshot](https://github.com/bywei/wemember/raw/master/Screenshots/app3.png)
